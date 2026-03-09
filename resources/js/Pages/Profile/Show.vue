@@ -17,7 +17,7 @@ defineProps({
     <AppLayout title="Profile">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
+                Perfil
             </h2>
         </template>
 
@@ -44,12 +44,12 @@ defineProps({
                     <SectionBorder />
                 </div>
 
-                <LogoutOtherBrowserSessionsForm :sessions="sessions" class="mt-10 sm:mt-0" />
+                <!-- <LogoutOtherBrowserSessionsForm :sessions="sessions" class="mt-10 sm:mt-0" /> -->
 
                 <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
-                    <SectionBorder />
-
                     <DeleteUserForm class="mt-10 sm:mt-0" />
+
+                    <SectionBorder />
                 </template>
             </div>
         </div>

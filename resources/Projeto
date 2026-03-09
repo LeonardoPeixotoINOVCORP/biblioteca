@@ -19,21 +19,14 @@ Livros
 
 Nos Livros teremos os seguintes campos:
 
-ISBN
-
-Nome
-
-Editora (relação)
-
-Autores (relação e pode ser mais que 1)
-
-Bibliografia
-
-Imagem da Capa
-
-Preço
-
-Autores
+    ISBN
+    Nome
+    Editora (relação)
+    Autores (relação e pode ser mais que 1)
+    Bibliografia
+    Imagem da Capa
+    Preço
+    Autores
 
 Nos Autores teremos os seguintes campos:
 

@@ -6,7 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\PublisherController;
-
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -26,7 +26,12 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/books', [BookController::class, 'index'])->name('books');
+    Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
+
     Route::get('/authors', [AuthorController::class, 'index'])->name('authors');
+    
     Route::get('/publishers', [PublisherController::class, 'index'])->name('publishers');
 });

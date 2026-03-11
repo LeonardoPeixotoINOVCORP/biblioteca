@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('isbn')->unique();
             $table->string('title');
             $table->foreignId('publisher_id')->constrained('publishers')->onDelete('cascade');
-            $table->text('bibliography');
-            $table->string('cover');
+            $table->text('bibliography')->nullable();
+            $table->string('cover')->nullable();
             $table->decimal('price', 8, 2);
             $table->timestamps();
         });

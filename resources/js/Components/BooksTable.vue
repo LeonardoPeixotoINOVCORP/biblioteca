@@ -27,14 +27,15 @@ function toggleSort(field) {
 
 <template>
     <div class="rounded-xl shadow ">
-        <table class="min-w-full divide-y divide-gray-200 bg-white text-sm table-fixed">
+        <table class="min-w-full w-full divide-y divide-gray-200 bg-white text-sm table-fixed">
             <colgroup>
-                <col class="w-16">
-                <col class="w-36">
-                <col class="w-56">
-                <col class="w-auto">
-                <col class="w-44">
-                <col class="w-24">
+                <col class="w-[100px]">
+                <col class="w-[160px]">
+                <col class="w-[220px]">
+                <col class="w-[280px]">
+                <col class="w-[160px]">
+                <col class="w-[100px]">
+                <col class="w-[200px]">
             </colgroup>
             <thead class="bg-gray-50">
                 <tr>
@@ -76,6 +77,10 @@ function toggleSort(field) {
                         <span class="ml-1 text-gray-400">{{ sortIcon('price') }}</span>
                     </th>
 
+                    <!-- Ações -->
+                    <th class="px-4 py-3 text-center font-semibold text-gray-600 uppercase tracking-wider">
+                        Ações
+                    </th>
                 </tr>
             </thead>
             
@@ -87,11 +92,13 @@ function toggleSort(field) {
                 >
                     <!-- Capa miniatura -->
                     <td class="px-4 py-3">
-                        <img
+                        <Link :href="route('books.show', book.id)">
+                            <img
                             :src="book.cover"
                             :alt="book.title"
-                            class="h-14 w-10 object-cover rounded shadow"
+                            class="h-20 w-30 object-cover rounded shadow"
                         />
+                        </Link>
                     </td>
 
                     <!-- ISBN -->
@@ -100,12 +107,14 @@ function toggleSort(field) {
                     </td>
 
                     <!-- Título -->
-                    <td class="px-4 py-3 font-medium text-gray-900">
-                        {{ book.title }}
+                    <td class="px-4 py-3 font-medium text-gray-900 truncate max-w-0 hover:text-blue-900">
+                        <Link :href="route('books.show', book.id)">
+                            {{ book.title }}
+                        </Link>
                     </td>
 
                     <!-- Autores -->
-                    <td class="px-4 py-3 text-gray-600">
+                    <td class="px-4 py-3 text-gray-600 truncate max-w-0">
                         <span v-for="(author, index) in book.authors" :key="author.id">
                             {{ author.name }}<span v-if="index < book.authors.length - 1">, </span>
                         </span>
@@ -118,9 +127,24 @@ function toggleSort(field) {
 
                     <!-- Preço -->
                     <td class="px-4 py-3 text-gray-800 font-semibold">
-                        {{ book.price }}€
+                        {{ Number(book.price).toFixed(2) }}€
                     </td>
-
+                    
+                    <!-- Ações -->
+                    <td class="px-4 py-3 font-semibold">
+                        <div class="flex gap-2 justify-center">
+                            <Link :href="route('books.edit', book.id)"  class="rounded-xl px-3 py-1 bg-gray-800 text-gray-100 hover:bg-gray-600 transition duration-150">
+                                Editar
+                            </Link>
+                            <Link 
+                            :href="route('books.destroy', book.id)"
+                            method="delete"
+                            class="rounded-xl px-3 py-1 text-red-800 bg-gray-100 border border-gray-300 hover:bg-gray-300 transition duration-150">
+                                Remover
+                                
+                            </Link>
+                        </div>
+                    </td>
                 </tr>
 
                 <!-- Estado vazio -->

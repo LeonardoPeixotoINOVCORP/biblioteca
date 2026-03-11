@@ -1,8 +1,10 @@
 <script setup>
+import Pagination from '@/Components/Pagination.vue'
 import BooksTable from '@/Components/BooksTable.vue'
 import { Link, router } from '@inertiajs/vue3'
 import { ref, watch } from 'vue'
 import AppLayout from '@/Layouts/AppLayout.vue'
+import PageHeader from '@/Components/PageHeader.vue'
 
 const props = defineProps({
     books: Object,
@@ -47,10 +49,17 @@ function handleSort(newSort) {
 <template>
     <AppLayout title="Livros">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Livros
-            </h2>
+            <PageHeader title="Livros">
+                <template #actions>
+                <Link
+                    :href="route('books.create')"
+                    class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+                >
+                    Criar um livro
+                </Link>
         </template>
+      </PageHeader>
+    </template>
 
         <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
 
@@ -104,39 +113,7 @@ function handleSort(newSort) {
             />
 
             <!-- Paginação -->
-            <div class="flex items-center justify-between">
-                <Link
-                    v-if="books.prev_page_url"
-                    :href="books.prev_page_url"
-                    preserve-scroll
-                    class="px-4 py-2 rounded-lg border text-sm text-gray-700 hover:bg-gray-200 transition"
-                >
-                    ← Anterior
-                </Link>
-                <span
-                    v-else
-                    class="px-4 py-2 rounded-lg border text-sm text-gray-300 pointer-events-none"
-                >
-                    ← Anterior
-                </span>
-
-                <span class="text-sm text-gray-500">Página {{ books.current_page }}</span>
-
-                <Link
-                    v-if="books.next_page_url"
-                    :href="books.next_page_url"
-                    preserve-scroll
-                    class="px-4 py-2 rounded-lg border text-sm text-gray-700 hover:bg-gray-200 transition"
-                >
-                    Próxima →
-                </Link>
-                <span
-                    v-else
-                    class="px-4 py-2 rounded-lg border text-sm text-gray-300 pointer-events-none"
-                >
-                    Próxima →
-                </span>
-            </div>
+            <Pagination :books="books" />
 
         </div>
     </AppLayout>

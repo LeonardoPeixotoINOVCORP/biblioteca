@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\Publisher;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -62,4 +65,85 @@ class BookController extends Controller
             'book' => $book
         ]);
     }
+
+    public function create()
+    {
+        return Inertia::render('Books/Create', [
+            'publishers' => Publisher::all(),
+            'authors' => Author::all()
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:30',
+            'price' => 'required|numeric',
+            'isbn' => 'required|string|size:13',
+            'bibliography' => 'required|string',
+            'publisher_id' => 'required|exists:publishers,id',
+            'cover'=> 'nullable|image|max:2048',
+            'author_ids' => 'required|array',
+            'author_ids.*' => 'exists:authors,id',
+        ]);
+
+        if($request->hasFile('cover')){
+            $data['cover'] = $request->file('cover')->store('covers','public');
+        }
+
+        $book = Book::create($data);
+
+        // Relaciona os autores
+        $book->authors()->attach($data['author_ids']);
+
+        return redirect()->route('books.show',$book);
+    }
+
+    public function edit(Book $book){
+        $book->load(['publisher','authors']);
+
+        return Inertia::render('Books/Edit', [
+            'book' => $book,
+            'publishers' => Publisher::all(),
+            'authors' => Author::all(),
+        ]);
+    }
+
+    public function update(Request $request, Book $book)
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'isbn' => 'required|string|max:50',
+            'bibliography' => 'nullable|string',
+            'publisher_id' => 'required|exists:publishers,id',
+            'cover' => 'nullable|image|max:2048',
+            'author_ids' => 'required|array',
+            'author_ids.*' => 'exists:authors,id',
+        ]);
+
+        if ($request->hasFile('cover')) {
+            if ($book->cover) {
+                Storage::disk('public')->delete($book->cover);
+            }
+            $data['cover'] = $request->file('cover')->store('covers', 'public');
+        } else {
+            unset($data['cover']);
+        }
+
+        $book->update($data);
+
+        // Sincroniza os autores (pivot table)
+        $book->authors()->sync($data['author_ids']);
+
+        return redirect()->route('books.show', $book);
+    }
+
+    public function destroy(Book $book)
+    {
+        $book->delete();
+
+        return redirect('/books');
+    }
+    
 }

@@ -1,13 +1,12 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import PageHeader from '@/Components/PageHeader.vue';
 </script>
 
 <template>
     <AppLayout title="Editoras">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Editoras
-            </h2>
+            <PageHeader title="Editoras"/>
         </template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

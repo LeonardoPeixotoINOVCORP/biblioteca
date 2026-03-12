@@ -37,17 +37,32 @@ const props = defineProps({
 
                     <p class="text-gray-700">
                         <span><strong>{{ book.authors.length > 1 ? 'Autores' : 'Autor' }}: </strong> </span>
-                        <span 
+                        <Link
                         v-for="(author, index) in book.authors" 
-                        :key="author.id">
+                        :href="route('authors.show', author.id)" 
+                        :key="author.id"
+                        class="hover:underline hover:text-gray-500"
+                        >
                             {{ author.name }}<span 
                             v-if="index < book.authors.length - 1"
                             >, 
                         </span>
-                        </span>
+                        </Link>
                     </p>
 
-                    <p class="text-gray-700"><strong>Editora:</strong> {{ book.publisher?.name ?? '—' }}</p>
+                    <p class="text-gray-700">
+                        <strong>Editora: </strong>
+                        <Link
+                            v-if="book.publisher"
+                            :href="route('publishers.show', book.publisher.id)"
+                            class="hover:underline hover:text-gray-500"
+                        >
+                            {{ book.publisher.name }}
+                        </Link>
+
+                        <span v-else>—</span>
+                    </p>
+                    
                     <p class="text-gray-700"><strong>ISBN:</strong> {{ book.isbn }}</p>
                     <p class="text-gray-800 font-semibold"><strong>Preço:</strong> {{ Number(book.price).toFixed(2) }}€</p>
 

@@ -21,8 +21,12 @@ const props = defineProps({
         <div class="max-w-5xl mx-auto py-8">
             <div class="flex flex-col md:flex-row gap-6">
 
-                <!-- Foto do autor -->
-                <ImageCard :src="author.photo" :alt="author.name" fallback-text="Sem capa"/>
+                <!-- Foto da editora -->
+                <ImageCard 
+                :src="author.photo" 
+                :alt="author.name" 
+                fallback-text="Sem foto"/>
+
 
                 <!-- Informações -->
                 <div class="md:w-2/3 flex flex-col gap-6">
@@ -30,7 +34,7 @@ const props = defineProps({
                     <BookList :books="author.books"/>
                     <ActionLinks :edit-route="route('authors.edit', author.id)" :delete-route="route('authors.destroy', author.id)"/>
                 </div>
-
+                
             </div>
         </div>
     </AppLayout>

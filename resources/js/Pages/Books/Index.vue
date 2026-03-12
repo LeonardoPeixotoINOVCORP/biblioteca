@@ -51,15 +51,15 @@ function handleSort(newSort) {
         <template #header>
             <PageHeader title="Livros">
                 <template #actions>
-                <Link
-                    :href="route('books.create')"
-                    class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
-                >
-                    Criar um livro
-                </Link>
+                    <Link
+                        :href="route('books.create')"
+                        class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+                    >
+                        Criar um livro
+                    </Link>
+                </template>
+            </PageHeader>
         </template>
-      </PageHeader>
-    </template>
 
         <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
 
@@ -113,7 +113,7 @@ function handleSort(newSort) {
             />
 
             <!-- Paginação -->
-            <Pagination :books="books" />
+            <Pagination :page="books" />
 
         </div>
     </AppLayout>

@@ -79,9 +79,9 @@ class BookController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:30',
             'price' => 'required|numeric',
-            'isbn' => 'required|string|size:13',
+            'isbn' => 'required|digits:13',
             'bibliography' => 'required|string',
-            'publisher_id' => 'required|exists:publishers,id',
+            'publisher_id' => 'nullable|exists:publishers,id',
             'cover'=> 'nullable|image|max:2048',
             'author_ids' => 'required|array',
             'author_ids.*' => 'exists:authors,id',
@@ -96,7 +96,7 @@ class BookController extends Controller
         // Relaciona os autores
         $book->authors()->attach($data['author_ids']);
 
-        return redirect()->route('books.show',$book);
+        return redirect()->route('book.show',$book);
     }
 
     public function edit(Book $book){

@@ -31,8 +31,8 @@ function toggleSort(field) {
             <colgroup>
                 <col class="w-[100px]">
                 <col class="w-[160px]">
-                <col class="w-[220px]">
-                <col class="w-[280px]">
+                <col class="w-[250px]">
+                <col class="w-[250px]">
                 <col class="w-[160px]">
                 <col class="w-[100px]">
                 <col class="w-[200px]">
@@ -116,13 +116,22 @@ function toggleSort(field) {
                     <!-- Autores -->
                     <td class="px-4 py-3 text-gray-600 truncate max-w-0">
                         <span v-for="(author, index) in book.authors" :key="author.id">
+                            <Link :href="route('authors.show', author.id)">
                             {{ author.name }}<span v-if="index < book.authors.length - 1">, </span>
+                            </Link>
                         </span>
                     </td>
 
                     <!-- Editora -->
                     <td class="px-4 py-3 text-gray-600">
-                        {{ book.publisher?.name ?? '—' }}
+                        <Link 
+                            v-if="book.publisher"
+                            :href="route('publishers.show', book.publisher.id)"
+                        >
+                            {{ book.publisher.name }}
+                        </Link>
+
+                        <span v-else>—</span>
                     </td>
 
                     <!-- Preço -->

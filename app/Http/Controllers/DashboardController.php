@@ -11,12 +11,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Dashboard', [
-            'stats' => [
-                'total_books'      => Book::count(),
-                'total_authors'    => Author::count(),
-                'total_publishers' => Publisher::count(),
-            ]
-        ]);
+        $stats = [
+            'total_books' => Book::count(),
+            'total_authors' => Author::count(),
+            'total_publishers' => Publisher::count(),
+            'latest_books' => Book::latest()->take(5)->get(),
+            'latest_authors' => Author::latest()->take(5)->get(),
+            'latest_publishers' => Publisher::latest()->take(5)->get(),
+        ];
+    return Inertia::render('Dashboard', ['stats' => $stats]);
     }
 }

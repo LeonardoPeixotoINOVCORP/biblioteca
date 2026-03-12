@@ -2,15 +2,15 @@
 import { Link } from '@inertiajs/vue3'
 
 defineProps({
-    books: Object
+    page: Object
 })
 </script>
 
 <template>
 <div class="flex items-center justify-between">
     <Link
-        v-if="books.prev_page_url"
-        :href="books.prev_page_url"
+        v-if="page.prev_page_url"
+        :href="page.prev_page_url"
         preserve-scroll
             class="px-4 py-2 rounded-lg border bg-white text-sm text-gray-700 hover:font-medium hover:bg-gray-200 transition "
     >
@@ -23,11 +23,11 @@ defineProps({
         ← Anterior
     </span>
 
-    <span class="text-sm text-gray-500">Página {{ books.current_page }}</span>
+    <span class="text-sm text-gray-500">Página {{ page.current_page }}</span>
 
     <Link
-        v-if="books.next_page_url"
-        :href="books.next_page_url"
+        v-if="page.next_page_url"
+        :href="page.next_page_url"
         preserve-scroll
             class="px-4 py-2 rounded-lg border bg-white/80 text-sm text-gray-700 hover:bg-gray-100 hover:font-medium hover:bg-gray-200 transition"
     >

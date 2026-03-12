@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Author;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class AuthorController extends Controller
 {
     public function index()
     {
-
-        $authors = Author::all();
+        $authors = Author::latest()->simplePaginate(15);
 
         return Inertia::render('Authors/Index', [
             'authors' => $authors
@@ -20,6 +20,8 @@ class AuthorController extends Controller
 
     public function show(Author $author)
     {
+        $author->load('books');
+        
         return Inertia::render('Authors/Show', [
             'author' => $author
         ]);
@@ -42,9 +44,41 @@ class AuthorController extends Controller
 
         $author = Author::create($data);
 
-        // Relaciona os autores
-        $author = Author::create($data);
+        return redirect()->route('authors.show',$author);
+    }
+
+    public function edit(Author $author){
+
+       return Inertia::render('Authors/Edit',[
+            'author' => $author
+        ]);
+    }
+
+    public function update(Request $request, Author $author){
+    
+        $data = $request->validate([
+            'name' => 'required|string|max:50',
+            'photo' => 'nullable|image|max:2048'
+        ]);
+
+        if($request->hasFile('photo')){
+            if($author->photo){
+                Storage::disk('public')->delete($author->photo);
+            } 
+                        $data['photo'] = $request->file('photo')->store('photos', 'public');
+
+        } else {
+            unset($data['photo']);
+        }
+
+        $author->update($data);
 
         return redirect()->route('authors.show',$author);
+    }
+
+    public function destroy(Author $author){
+        $author->delete();
+        
+        return redirect('authors');
     }
 }

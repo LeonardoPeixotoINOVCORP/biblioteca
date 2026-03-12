@@ -39,6 +39,16 @@ Route::middleware([
     Route::get('/author/create', [AuthorController::class, 'create'])->name('authors.create');
     Route::post('/author', [AuthorController::class,'store'])->name('authors.store');
     Route::get('/author/{author}', [AuthorController::class, 'show'])->name('authors.show');
+    Route::get('/author/edit/{author}', [AuthorController::class, 'edit'])->name('authors.edit');
+    Route::put('/author/{author}', [AuthorController::class, 'update'])->name('authors.update');
+    Route::delete('/author/{author}', [AuthorController::class, 'destroy'])->name('authors.destroy');
     
     Route::get('/publishers', [PublisherController::class, 'index'])->name('publishers');
+    Route::get('/publisher/create', [publisherController::class, 'create'])->name('publishers.create');
+    Route::get('/publisher/{publisher}', [PublisherController::class, 'show'])->name('publishers.show');
+    Route::post('/publisher', [PublisherController::class,'store'])->name('publishers.store');
+    Route::get('/publisher/edit/{publisher}', [PublisherController::class, 'edit'])->name('publishers.edit');
+    Route::put('/publisher/{publisher}', [PublisherController::class, 'update'])->name('publishers.update');
+    Route::delete('/publisher/{publisher}', [PublisherController::class, 'destroy'])->name('publishers.destroy');
+
 });

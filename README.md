@@ -1,5 +1,5 @@
 # Clonar o repositório
-git clone https://github.com/LeonardoPeixotoINOVCORP/biblioteca.git
+git clone https://github.com/LeonardoPeixotoINOVCORP/biblioteca.git  
 cd biblioteca
 
 # Instalar dependências do Laravel
@@ -9,7 +9,7 @@ composer install
 npm install
 
 # Configurar o ambiente
-cp .env.example .env
+cp .env.example .env  
 php artisan key:generate
 
 # Lembre-se de configurar os dados da base de dados no arquivo .env

@@ -134,9 +134,9 @@ const actions = [
                             <li v-for="book in stats.latest_books" :key="book.id">
                                 <Link
                                     :href="route('books.show', book.id)"
-                                    class="flex items-center justify-between px-5 py-3 hover:bg-blue-50 transition-colors group"
+                                    class="flex items-center justify-between px-5 py-3 hover:bg-amber-50 transition-colors group"
                                 >
-                                <span class="text-sm text-gray-700 group-hover:text-blue-700 truncate transition-colors">{{ book.title }}</span>
+                                <span class="text-sm text-gray-700 group-hover:text-amber-700 truncate transition-colors">{{ book.title }}</span>
                                 <img 
                                   v-if="book.cover"
                                   :src="`/storage/${book.cover}`"
@@ -163,10 +163,10 @@ const actions = [
                             <li v-for="author in stats.latest_authors" :key="author.id">
                                 <Link
                                     :href="route('authors.show', author.id)"
-                                    class="flex items-center justify-between px-5 py-3 hover:bg-blue-50 transition-colors group"
+                                    class="flex items-center justify-between px-5 py-3 hover:bg-amber-50 transition-colors group"
                                 >
                                     <div class="flex items-center gap-3 min-w-0">
-                                        <span class="text-sm text-gray-700 group-hover:text-blue-700 truncate transition-colors">{{ author.name }}</span>     
+                                        <span class="text-sm text-gray-700 group-hover:text-amber-700 truncate transition-colors">{{ author.name }}</span>     
                                     </div>
                                     <img 
                                   v-if="author.photo"
@@ -194,10 +194,10 @@ const actions = [
                             <li v-for="publisher in stats.latest_publishers" :key="publisher.id">
                                 <Link
                                     :href="route('publishers.show', publisher.id)"
-                                    class="flex items-center justify-between px-5 py-3 hover:bg-blue-50 transition-colors group"
+                                    class="flex items-center justify-between px-5 py-3 hover:bg-amber-50 transition-colors group"
                                 >
                                     <div class="flex items-center gap-3 min-w-0">
-                                        <span class="text-sm text-gray-700 group-hover:text-blue-700 truncate transition-colors">{{ publisher.name }}</span>     
+                                        <span class="text-sm text-gray-700 group-hover:text-amber-700 truncate transition-colors">{{ publisher.name }}</span>     
                                     </div>
                                     <img 
                                   v-if="publisher.logo"

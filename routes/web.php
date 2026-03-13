@@ -34,6 +34,8 @@ Route::middleware([
     Route::put('/book/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/book/{book}', [BookController::class, 'destroy'])->name('books.destroy');
 
+    Route::get('/books/export', [BookController::class,'export'])->name('books.export');
+    Route::get('/books/export-all', [BookController::class,'exportAll'])->name('books.exportAll');
 
     Route::get('/authors', [AuthorController::class, 'index'])->name('authors');
     Route::get('/author/create', [AuthorController::class, 'create'])->name('authors.create');

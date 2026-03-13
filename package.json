@@ -22,6 +22,7 @@
         "vue": "^3.3.13"
     },
     "dependencies": {
-        "daisyui": "^5.5.19"
+        "daisyui": "^5.5.19",
+        "xlsx": "^0.18.5"
     }
 }

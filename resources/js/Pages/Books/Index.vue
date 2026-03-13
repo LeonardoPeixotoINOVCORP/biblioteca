@@ -16,7 +16,7 @@ const sort      = ref(props.filters?.sort      ?? 'latest')
 const price_min = ref(props.filters?.price_min ?? '')
 const price_max = ref(props.filters?.price_max ?? '')
 
-// Debounce genérico
+
 let debounce = null
 function scheduleApply() {
     clearTimeout(debounce)
@@ -26,7 +26,7 @@ function scheduleApply() {
 watch(search,    scheduleApply)
 watch(price_min, scheduleApply)
 watch(price_max, scheduleApply)
-watch(sort, applyFilters)          // ordenação aplica imediatamente
+watch(sort, applyFilters)         
 
 function applyFilters() {
     router.get(route('books'), {
@@ -51,12 +51,27 @@ function handleSort(newSort) {
         <template #header>
             <PageHeader title="Livros">
                 <template #actions>
-                    <Link
-                        :href="route('books.create')"
-                        class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
-                    >
-                        Criar um livro
-                    </Link>
+                    <div class="flex space-x-4 items-center gap-2">
+                        <Link
+                            :href="route('books.create')"
+                            class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+                        >
+                            Criar um livro
+                        </Link>
+    
+                        <a
+                        :href="route('books.export', {
+                            search: search,
+                            sort: sort,
+                            price_min: price_min,
+                            price_max: price_max
+                        })"
+                            target="_blank"
+                            class="px-4 py-2 bg-gray-100 text-gray-800 rounded-md border border-gray-300 hover:bg-gray-300 transition duration-150"
+                        >
+                            Exportar dados
+                        </a>
+                    </div>
                 </template>
             </PageHeader>
         </template>

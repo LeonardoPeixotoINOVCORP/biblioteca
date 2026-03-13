@@ -9,6 +9,10 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
+use App\Exports\BooksExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class BookController extends Controller
 {
     public function index(Request $request)
@@ -96,7 +100,7 @@ class BookController extends Controller
         // Relaciona os autores
         $book->authors()->attach($data['author_ids']);
 
-        return redirect()->route('book.show',$book);
+        return redirect()->route('books.show',$book);
     }
 
     public function edit(Book $book){
@@ -145,5 +149,12 @@ class BookController extends Controller
 
         return redirect('/books');
     }
-    
+
+    public function export(Request $request)
+    {
+        return Excel::download(
+            new BooksExport($request->all()),
+            'livrosExportados.xlsx'
+        );
+    }
 }

@@ -142,13 +142,13 @@ function toggleSort(field) {
                     <!-- Ações -->
                     <td class="px-4 py-3 font-semibold">
                         <div class="flex gap-2 justify-center">
-                            <Link :href="route('books.edit', book.id)"  class="rounded-xl px-3 py-1 bg-gray-800 text-gray-100 hover:bg-gray-600 transition duration-150">
+                            <Link :href="route('books.edit', book.id)"  class="rounded-md px-3 py-1 bg-gray-800 text-gray-100 hover:bg-gray-600 transition duration-150">
                                 Editar
                             </Link>
                             <Link 
                             :href="route('books.destroy', book.id)"
                             method="delete"
-                            class="rounded-xl px-3 py-1 text-red-800 bg-gray-100 border border-gray-300 hover:bg-gray-300 transition duration-150">
+                            class="rounded-md px-3 py-1 text-red-800 bg-gray-100 border border-gray-300 hover:bg-gray-300 transition duration-150">
                                 Remover
                                 
                             </Link>

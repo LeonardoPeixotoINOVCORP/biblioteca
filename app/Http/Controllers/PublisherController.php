@@ -18,18 +18,30 @@ class PublisherController extends Controller
         ]);
     }
 
-    public function show(Publisher $publisher){
+    public function show($id){
+
+        $publisher = Publisher::with('books')->findOrFail($id);
+
         return Inertia::render('Publishers/Show', [
             'publisher' => $publisher
         ]);
     }
 
     public function create(){
+
+        if (!auth()->user()->hasRole('admin')) {
+                abort(403);
+        }
+
         return Inertia::render('Publishers/Create');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $data = $request->validate([
             'name' => 'required|string|max:50',
             'logo'=> 'nullable|image|max:2048',
@@ -45,6 +57,11 @@ class PublisherController extends Controller
     }
 
     public function edit(Publisher $publisher){
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         return Inertia::render('Publishers/Edit', [
             'publisher' => $publisher
         ]);
@@ -52,6 +69,10 @@ class PublisherController extends Controller
 
     public function update(Request $request, Publisher $publisher){
     
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $data = $request->validate([
             'name' => 'required|string|max:50',
             'logo' => 'nullable|image|max:2048'
@@ -73,6 +94,11 @@ class PublisherController extends Controller
     }
 
     public function destroy(Publisher $publisher){
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $publisher->delete();
         
         return redirect('publishers');

@@ -1,0 +1,67 @@
+Projeto: Biblioteca
+
+Instalar o Laravel Jetstream.
+Permitir o login com 2FA.
+Customizar o tema com componentes https://daisyui.com/components/
+Criar um repositório no Github com a conta da Inovcorp.
+
+Menus
+
+Teremos 3 menus, onde teremos em cada um deles tabelas:
+
+Livros
+Autores
+Editoras
+
+Nestas tabelas deve ser possível pesquisar, ordenar e filtrar pelos campos.
+
+- Livros
+Nos Livros teremos os seguintes campos:
+    ISBN
+    Nome
+    Editora (relação)
+    Autores (relação e pode ser mais que 1)
+    Bibliografia
+    Imagem da Capa
+    Preço
+
+- Autores
+Nos Autores teremos os seguintes campos:
+    Nome
+    Foto
+
+- Editoras
+Nas Editoras teremos os seguintes campos:
+    Nome
+    Logótipo
+
+- Notas
+Ter os dados cifrados na base de dados.
+Capacidade de exportação de ficheiro excel com os dados da base de dados de Livros.
+
+- Notificar
+13.03.2026.
+Vídeo de Apresentação.
+Ter o Repositório atualizado.
+
+Projeto Biblioteca - Funcionalidades a Implementar:
+
+Passam a existir 2 roles de permissões: Admin e Cidadãos.
+    Os Admin são os utilizadores que podem inserir, editar e eliminar livros.
+    Os Cidadãos são os utilizadores que podem solicitar Requisições.
+    Os utilizadores que se podem registar na Aplicação, ficam automaticamente como Cidadãos.
+    Os utilizadores Admin apenas podem ser criados por outros utilizadores Admin.
+
+No catálogo publico, deve ser possível ver se o livro está disponível ou não para requisição e no seu detalhe ou listagem ter um botão para requisitar.
+
+No detalhe dos Cidadãos deve ser possível ver o histórico de requisições existentes e passadas.
+Cada vez que é feita uma requisição tem de ficar registado o Cidadão com dados fotográficos, o dia da mesma e a data de fim, prevista, serão sempre 5 dias após a requisição.
+Cada cidadão apenas deve poder ter 3 livros requisitados em simultâneo.
+
+Cada cidadão apenas deve poder ter 3 livros requisitados em simultâneo.
+No entanto os Admin têm de confirmar a boa recepção do livro e com isto identificar o real dia de recepção do mesmo, bem como o número de dias decorrentes.
+
+Sempre que é feita uma requisição tem de ser enviado um email para os Admin, bem como para o Cidadão a confirmar a requisição, com os detalhes da mesma e com a capa do livro.
+No dia anterior à data de entrega o cidadão tem de receber um reminder por email.
+Na parte superior do menu das requisições devo ter alguns indicadores: # Requisições Ativas, # Requisições nos últimos 30 dias, # Livros entregues Hoje.
+

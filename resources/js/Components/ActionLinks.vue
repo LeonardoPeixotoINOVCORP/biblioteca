@@ -10,8 +10,11 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="flex gap-3 font-semibold text-lg">
-        <Link :href="editRoute" class="rounded-xl px-5 py-3 bg-gray-800 text-gray-100 hover:bg-gray-600 transition">
+    <div class="flex gap-3 font-semibold">
+        <Link 
+        :href="editRoute" 
+        class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+        >
             {{ editText }}
         </Link>
         
@@ -19,7 +22,7 @@ const props = defineProps({
         v-if="deleteRoute"
         :href="deleteRoute" 
         method="delete"
-        class="rounded-xl px-5 py-3 text-red-800 bg-gray-100 border border-gray-300 hover:bg-gray-300 transition"
+        class="px-4 py-2 text-red-800 bg-gray-100 rounded-md border border-gray-300 hover:bg-gray-300 transition"
         >
         {{ deleteText }}
         </Link>

@@ -16,7 +16,8 @@ class Book extends Model
         'isbn',
         'bibliography',
         'publisher_id',
-        'cover'
+        'cover',
+        'available'
     ];
     public function authors()
     {
@@ -26,5 +27,10 @@ class Book extends Model
     public function publisher()
     {
         return $this->belongsTo(Publisher::class);
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(BookRequest::class);
     }
 }

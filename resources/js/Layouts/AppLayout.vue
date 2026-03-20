@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -12,11 +12,32 @@ defineProps({
     title: String,
 });
 
-const showingNavigationDropdown = ref(false);
+const page = usePage()
+
+const showingNavigationDropdown = ref(false)
 
 const logout = () => {
-    router.post(route('logout'));
-};
+    router.post(route('logout'))
+}
+
+const showToast = ref(false)
+const toastType = ref('success') // 'success' ou 'error'
+
+watch(
+    () => page.props.flash,
+    (flash) => {
+        if (flash?.success) {
+            toastType.value = 'success'
+            showToast.value = true
+            setTimeout(() => { showToast.value = false }, 3000)
+        } else if (flash?.error) {
+            toastType.value = 'error'
+            showToast.value = true
+            setTimeout(() => { showToast.value = false }, 3000)
+        }
+    },
+    { immediate: true }
+)
 </script>
 
 <template>
@@ -51,6 +72,12 @@ const logout = () => {
                                 </NavLink>
                                 <NavLink :href="route('publishers')" :active="route().current('publishers')">
                                     Editoras
+                                </NavLink>
+                                <NavLink :href="route('book-requests.index')" :active="route().current('book-requests.index')">
+                                    Requisições
+                                </NavLink>
+                                <NavLink v-if="$page.props.auth.roles.includes('admin')" :href="route('users.index')" :active="route().current('users.index')">
+                                    Utilizadores
                                 </NavLink>
                             </div>
                         </div>
@@ -168,23 +195,45 @@ const logout = () => {
                     </div>
                 </div>
             </nav>
-
+            
+            <transition
+                enter-active-class="transition duration-300 ease-out"
+                enter-from-class="opacity-0 translate-y-2"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition duration-200 ease-in"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div
+                    v-if="showToast"
+                    class="toast toast-top toast-center z-50"
+                >
+                    <div role="alert" :class="['alert', toastType === 'error' ? 'alert-error' : 'alert-sucess']">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current h-6 w-6 shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>{{ toastType === 'error' ? page.props.flash.error : page.props.flash.success }}</span>
+                    </div>
+                </div>
+            </transition>
+            
             <!-- Page Heading -->
             <header v-if="$slots.header" class="bg-white shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>
-
-
+            
+            
             <!-- Page Content -->
             <main class="flex-1">
                 <slot />
             </main>
-
-            <footer class="bg-white text-center text-sm text-gray-400 py-6 border-t border-gray-200">
+            
+            <footer class="footer sm:footer-horizontal place-items-center bg-base-200 text-center text-sm text-gray-400 p-10 border-t border-gray-200">
                 © {{ new Date().getFullYear() }} Biblioteca · INOVCORP
             </footer>
+            
 
         </div>
     </div>

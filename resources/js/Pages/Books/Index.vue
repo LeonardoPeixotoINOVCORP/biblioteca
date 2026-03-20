@@ -51,15 +51,24 @@ function handleSort(newSort) {
         <template #header>
             <PageHeader title="Livros">
                 <template #actions>
-                    <div class="flex space-x-4 items-center gap-2">
+                    <div  class="flex space-x-4 items-center gap-2">
                         <Link
+                            v-if="$page.props.auth.roles.includes('admin')"
                             :href="route('books.create')"
-                            class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
+                            class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
                         >
                             Criar um livro
                         </Link>
     
+                        <Link
+                            :href="route('book-requests.create')"
+                            class="px-4 py-2 bg-gray-100 text-gray-800 rounded-md border border-gray-300 hover:bg-gray-300 transition duration-150"
+                        >
+                            Requisitar um livro
+                        </Link>
+
                         <a
+                        v-if="$page.props.auth.roles.includes('admin')"
                         :href="route('books.export', {
                             search: search,
                             sort: sort,

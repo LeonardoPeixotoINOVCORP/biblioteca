@@ -35,7 +35,8 @@ function toggleSort(field) {
                 <col class="w-[250px]">
                 <col class="w-[160px]">
                 <col class="w-[100px]">
-                <col class="w-[200px]">
+                <col class="w-[160px]">
+                <col v-if="$page.props.auth.roles.includes('admin')" class="w-[200px]">
             </colgroup>
             <thead class="bg-gray-50">
                 <tr>
@@ -77,8 +78,13 @@ function toggleSort(field) {
                         <span class="ml-1 text-gray-400">{{ sortIcon('price') }}</span>
                     </th>
 
-                    <!-- Ações -->
+                    <!-- Disponibilidade -->
                     <th class="px-4 py-3 text-center font-semibold text-gray-600 uppercase tracking-wider">
+                        Disponibilidade
+                    </th>
+
+                    <!-- Ações -->
+                    <th v-if="$page.props.auth.roles.includes('admin')" class="px-4 py-3 text-center font-semibold text-gray-600 uppercase tracking-wider">
                         Ações
                     </th>
                 </tr>
@@ -138,9 +144,14 @@ function toggleSort(field) {
                     <td class="px-4 py-3 text-gray-800 font-semibold">
                         {{ Number(book.price).toFixed(2) }}€
                     </td>
+
+                    <!-- Preço -->
+                    <td class="px-4 py-3 text-gray-800 font-semibold text-center">
+                        {{ book.available ? "Disponivel" : "Indisponível"}}
+                    </td>
                     
                     <!-- Ações -->
-                    <td class="px-4 py-3 font-semibold">
+                    <td v-if="$page.props.auth.roles.includes('admin')" class="px-4 py-3 font-semibold">
                         <div class="flex gap-2 justify-center">
                             <Link :href="route('books.edit', book.id)"  class="rounded-md px-3 py-1 bg-gray-800 text-gray-100 hover:bg-gray-600 transition duration-150">
                                 Editar

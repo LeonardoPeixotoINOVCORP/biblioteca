@@ -16,6 +16,7 @@ const props = defineProps({
             <PageHeader title="Editoras">
                 <template #actions>
                     <Link
+                        v-if="$page.props.auth.roles.includes('admin')"
                         :href="route('publishers.create')"
                         class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition"
                     >

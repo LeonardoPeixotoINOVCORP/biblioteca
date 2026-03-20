@@ -65,13 +65,23 @@ class BookController extends Controller
     {
         $book->load(['publisher','authors']);
 
+        $requests = $book->requests()
+        ->with('user')
+        ->latest()
+        ->get();
+
         return Inertia::render('Books/Show', [
-            'book' => $book
+            'book' => $book,
+            'requests' => $requests,
         ]);
     }
 
     public function create()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         return Inertia::render('Books/Create', [
             'publishers' => Publisher::all(),
             'authors' => Author::all()
@@ -80,30 +90,59 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $data = $request->validate([
-            'title' => 'required|string|max:30',
-            'price' => 'required|numeric',
-            'isbn' => 'required|digits:13',
-            'bibliography' => 'required|string',
-            'publisher_id' => 'nullable|exists:publishers,id',
-            'cover'=> 'nullable|image|max:2048',
-            'author_ids' => 'required|array',
-            'author_ids.*' => 'exists:authors,id',
+            'title'          => 'required|string|max:30',
+            'price'          => 'required|numeric',
+            'isbn'           => 'required|digits:13',
+            'bibliography'   => 'required|string',
+            'publisher_id'   => 'nullable|exists:publishers,id',
+            'cover'          => 'nullable|image|max:2048',
+            'author_ids'     => 'nullable|array',
+            'author_ids.*'   => 'exists:authors,id',
+            // novo autor
+            'new_author_name'  => 'nullable|string|max:100',
+            'new_author_photo' => 'nullable|image|max:2048',
         ]);
 
-        if($request->hasFile('cover')){
-            $data['cover'] = $request->file('cover')->store('covers','public');
+        // Se vier um novo autor, cria-o e adiciona o id ao array
+        if (!empty($data['new_author_name'])) {
+            $authorData = ['name' => $data['new_author_name']];
+
+            if ($request->hasFile('new_author_photo')) {
+                $authorData['photo'] = $request->file('new_author_photo')->store('authors', 'public');
+            }
+
+            $newAuthor = Author::create($authorData);
+            $data['author_ids'][] = $newAuthor->id;
+        }
+
+        // Valida que existe pelo menos um autor (existente ou novo)
+        if (empty($data['author_ids'])) {
+            return back()->withErrors(['author_ids' => 'Seleciona pelo menos um autor ou cria um novo.']);
+        }
+
+        if ($request->hasFile('cover')) {
+            $data['cover'] = $request->file('cover')->store('covers', 'public');
         }
 
         $book = Book::create($data);
-
-        // Relaciona os autores
         $book->authors()->attach($data['author_ids']);
 
-        return redirect()->route('books.show',$book);
+        return redirect()
+            ->route('books.show', $book)
+            ->with('success', 'Livro publicado com sucesso!');
     }
 
     public function edit(Book $book){
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $book->load(['publisher','authors']);
 
         return Inertia::render('Books/Edit', [
@@ -115,12 +154,16 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'price' => 'required|numeric',
             'isbn' => 'required|string|max:50',
             'bibliography' => 'nullable|string',
-            'publisher_id' => 'required|exists:publishers,id',
+            'publisher_id' => 'nullable|exists:publishers,id',
             'cover' => 'nullable|image|max:2048',
             'author_ids' => 'required|array',
             'author_ids.*' => 'exists:authors,id',
@@ -140,14 +183,22 @@ class BookController extends Controller
         // Sincroniza os autores (pivot table)
         $book->authors()->sync($data['author_ids']);
 
-        return redirect()->route('books.show', $book);
+        return redirect()
+            ->route('books.show', $book)
+            ->with('success', 'Livro atualizado com sucesso!');
     }
 
     public function destroy(Book $book)
     {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $book->delete();
 
-        return redirect('/books');
+        return redirect()
+            ->route('books')
+            ->with('success', 'Livro removido com sucesso!');
     }
 
     public function export(Request $request)
@@ -156,5 +207,11 @@ class BookController extends Controller
             new BooksExport($request->all()),
             'livrosExportados.xlsx'
         );
+    }
+
+    public function request(){
+        return Inertia::render('Books/Request', [
+            'books' => Book::orderBy('title')->get(['id', 'title'])
+        ]);
     }
 }

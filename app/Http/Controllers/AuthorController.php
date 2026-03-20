@@ -28,11 +28,21 @@ class AuthorController extends Controller
     }
 
     public function create(){
+
+        if (!auth()->user()->hasRole('admin')) {
+                abort(403);
+            }
+
         return Inertia::render('Authors/Create');
     }
 
     public function store(Request $request)
     {
+
+        if (!auth()->user()->hasRole('admin')) {
+                abort(403);
+        }
+
         $data = $request->validate([
             'name' => 'required|string|max:30',
             'photo'=> 'nullable|image|max:2048',
@@ -48,6 +58,10 @@ class AuthorController extends Controller
     }
 
     public function edit(Author $author){
+        
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
 
        return Inertia::render('Authors/Edit',[
             'author' => $author
@@ -56,6 +70,10 @@ class AuthorController extends Controller
 
     public function update(Request $request, Author $author){
     
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+
         $data = $request->validate([
             'name' => 'required|string|max:50',
             'photo' => 'nullable|image|max:2048'
@@ -77,6 +95,11 @@ class AuthorController extends Controller
     }
 
     public function destroy(Author $author){
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        
         $author->delete();
         
         return redirect('authors');

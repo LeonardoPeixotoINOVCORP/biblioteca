@@ -18,6 +18,18 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            keyframes:{
+                fadeSlide: {
+                    '0%' : { opacity: '0', transform: 'translateY(20px)' },
+                    '100%' : { opacity: '1', transform: 'translateY(0px)'},
+                },
+            },
+            animation:{
+                'fade-slide' : 'fadeSlide 0.25s ease-out forwards',
+            },
+            maxWidth:{
+                '7xl' : '96rem',
+            }
         },
     },
 

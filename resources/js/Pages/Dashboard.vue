@@ -17,6 +17,7 @@ const cards = [
     text: 'text-gray-800',
     icon_bg: 'bg-gray-200',
     icon_color: 'text-gray-700',
+    route: 'books'
 },
 {
     label: 'Total de Autores',
@@ -27,6 +28,7 @@ const cards = [
     text: 'text-gray-800',
     icon_bg: 'bg-gray-200',
     icon_color: 'text-gray-700',
+    route: 'authors'
 },
 {
     label: 'Total de Editoras',
@@ -37,6 +39,18 @@ const cards = [
     text: 'text-gray-800',
     icon_bg: 'bg-gray-200',
     icon_color: 'text-gray-700',
+    route: 'publishers'
+},
+{
+    label: 'Total de Requisições',
+    key: 'total_requests',
+    icon: 'M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z',
+    bg: 'bg-gray-50',
+    border: 'border-gray-200',
+    text: 'text-gray-800',
+    icon_bg: 'bg-gray-200',
+    icon_color: 'text-gray-700',
+    route: 'book-requests.index'
 }
 ]
 
@@ -73,11 +87,12 @@ const actions = [
 
         <div class="py-10 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-10">
 
-            <!-- Metric Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                <div
+            <!-- Cards com informações -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-5">
+                <Link
                     v-for="card in cards"
                     :key="card.key"
+                    :href="route(card.route)"
                     :class="['rounded-2xl border p-6 flex items-center gap-5 transition-shadow hover:border-amber-400', card.bg, card.border]"
                 >
                     <div :class="['w-12 h-12 rounded-xl flex items-center justify-center shrink-0', card.icon_bg]">
@@ -89,11 +104,11 @@ const actions = [
                         <p class="text-xs font-medium text-gray-500 uppercase tracking-widest mb-1">{{ card.label }}</p>
                         <p :class="['text-3xl font-bold leading-none', card.text]">{{ stats[card.key] }}</p>
                     </div>
-                </div>
+                </Link>
             </div>
 
-            <!-- Quick Actions -->
-            <div>
+            <!-- Ações rápidas -->
+            <div v-if="$page.props.auth.roles.includes('admin')">
                 <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Ações Rápidas</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <Link
@@ -115,7 +130,7 @@ const actions = [
                 </div>
             </div>
 
-            <!-- Recent Activity -->
+            <!-- Atividade Recente -->
             <div>
                 <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Atividade Recente</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -141,7 +156,7 @@ const actions = [
                                   v-if="book.cover"
                                   :src="`/storage/${book.cover}`"
                                   :alt="book.title"
-                                  class="w-8 h-8 rounded-full shadow-lg object-cover"
+                                  class="w-8 h-8 rounded-lg shadow-lg object-cover"
                                 />
                                 </Link>
                             </li>
@@ -172,7 +187,7 @@ const actions = [
                                   v-if="author.photo"
                                   :src="`/storage/${author.photo}`"
                                   :alt="author.title"
-                                  class="w-8 h-8 rounded-full shadow-lg object-cover"
+                                  class="w-8 h-8 rounded-lg shadow-lg object-cover"
                                 />
                                 </Link>
                             </li>
@@ -203,7 +218,7 @@ const actions = [
                                   v-if="publisher.logo"
                                   :src="`/storage/${publisher.logo}`"
                                   :alt="publisher.title"
-                                  class="w-8 h-8 rounded-full shadow-lg object-cover"
+                                  class="w-8 h-8 rounded-lg shadow-lg object-cover"
                                 />
                                 </Link>
                             </li>
